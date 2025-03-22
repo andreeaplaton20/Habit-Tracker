@@ -26,18 +26,6 @@
                     "date": "2025-03-19"
                 }
             ]
-        },
-        {
-            "name": "something",
-            "description": "something more",
-            "start_date": "19.03.2025",
-            "end_date": "2025-03-19",
-            "streak": 1,
-            "logs": [
-                {
-                    "date": "2025-03-19"
-                }
-            ]
         }
     ]
 }

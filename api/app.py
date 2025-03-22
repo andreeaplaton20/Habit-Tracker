@@ -29,6 +29,9 @@ class AddHabit(BaseModel):
 class DeleteHabit(BaseModel):
     name: str
 
+class EndHabit(BaseModel):
+    name: str
+
 class LogHabit(BaseModel):
     name: str
 
@@ -75,9 +78,23 @@ def add_habit(habit: AddHabit):
 
     return new_habit
 
-@app.post("/habits/{name}", tags=["Habits"])
+@app.delete("/habits/{name}", tags=["Habits"])
 def delete_habit(habit: str):
-    """Deleting a certain habit, meaning that we set and ending date for that habit"""
+    """Deleting a certain habit from the list of habits"""
+    today_date = datetime.now().strftime("%Y-%m-%d")
+    for existing_habit in database.database["habits"]:
+            if existing_habit["name"] == habit:
+                database.database["habits"].remove(existing_habit)
+                database.save_database_state()
+                return f"The {habit} habit was deleted successfully!"
+    raise HTTPException (
+        status_code=404,
+        detail="This habit doesn't exist!"
+    )
+
+@app.post("/habits/{name}", tags=["Habits"])
+def end_habit(habit: str):
+    """Setting an end date for a certain habit"""
     today_date = datetime.now().strftime("%Y-%m-%d")
     for existing_habit in database.database["habits"]:
             if existing_habit["name"] == habit:
